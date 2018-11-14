@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>demo</title>
+    <style>
+        body{
+            background-color: black;
+        }
+        canvas {
+            display: block;
+            margin: 0 auto;
+            border: 1px solid #aaa;
+        }
+        input{
+            display: block;
+            margin: 20px auto;
+            width: 600px;
+        }
+    </style>
+</head>
+<body>
+    <canvas id="canvas">您的浏览器尚不支持canvas</canvas>
+    <input type="range" min="0.5" max="3.0" step="0.01" value="1.0" id="magnify-control" />
+    <canvas id="watermark-canvas">您的浏览器尚不支持canvas</canvas>
+    <script>
+        //离屏canvas技术，即将第二的canvas加到第一个canvas上
+        var can = document.getElementById('canvas');
+        var ctx = can.getContext('2d');
+        var watermarkCan = document.getElementById('watermark-canvas');
+        var watermarkCtx = watermarkCan.getContext('2d');
+
+        var magnify = document.getElementById('magnify-control');
+        var image = new Image();
+
+        document.body.onload = init;
+        function init() {
+            can.width = 1152;
+            can.height = 768;
+            var scale = magnify.value;
+            image.onload = function () {
+                drawImageByScale(scale);
+                magnify.onmousemove = function () {
+                    scale = magnify.value;
+                    drawImageByScale(scale);
+                };
+            };
+            image.src = './img.jpg';
+            drawWaterMark();
+        }
+        function drawImageByScale(scale) {
+
+            var imageWidth = scale * can.width;
+            var imageHeight = scale * can.height;
+
+            var dx = can.width / 2 - imageWidth / 2;
+            var dy = can.height / 2 - imageHeight / 2;
+            ctx.clearRect(0, 0, can.width, can.height);
+            ctx.drawImage(image, dx, dy, imageWidth, imageHeight);
+            ctx.drawImage(watermarkCan, can.width - watermarkCan.width,
+                                        can.height - watermarkCan.height);
+        }
+        //draw watermark
+        function drawWaterMark(){
+            watermarkCan.width = 600;
+            watermarkCan.height = 100;
+            watermarkCtx.font = "bold 50px Arial";
+            //watermarkCtx.lineWidth = "1";
+            watermarkCtx.fillStyle = "rgba(255, 255, 255, 0.5)";
+            watermarkCtx.textAlign = "center";
+            watermarkCtx.fillText("==liyongfen.com.cn==", 300, 60);
+        }
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <title>demo</title>
+</head>
+
+<body>
+    <div style="margin: 20px auto; width:1700px;">
+        <canvas id="canvasa" width="800" height="560" style="display:inline-block;border:1px solid #aaa;">您的浏览器尚不支持canvas</canvas>
+        <canvas id="canvasb" width="800" height="560" style="display:inline-block;border:1px solid #aaa;">您的浏览器尚不支持canvas</canvas>
+    </div>
+    <div>
+        <button id="filter">滤镜</button>
+        <button id="grey">灰度</button>
+        <button id="blackAndWhite">黑白</button>
+        <button id="reverse">反色</button>
+        <button id="blur">模糊</button>
+        <button id="mosaic">马赛克</button>
+    </div>
+    <script>
+        /**
+        * 获取图像素
+        * context.getImageData(x, y, w, h)
+        * context.putImageData(iamgeData, dx, dy, dirtyX, dirtyY, dirtyW, dirtyH)
+        * 第i个像素，
+        * r=pixelData[4*i+0];
+        * g=pixelData[4*i+1];
+        * b=pixelData[4*i+2];
+        * a=pixelData[4*i+3]
+        */
+        var cana = document.getElementById('canvasa');
+        var ctxa = cana.getContext('2d');
+
+        var canb = document.getElementById('canvasb');
+        var ctxb = canb.getContext('2d');
+        var image = new Image();
+
+        var filterBtn = document.getElementById('filter')
+        var greyBtn = document.getElementById('grey')
+        var blackAndWhiteBtn = document.getElementById('blackAndWhite')
+        var reverseBtn = document.getElementById('reverse')
+        var blurBtn = document.getElementById('blur')
+        var mosaicBtn = document.getElementById('mosaic')
+        
+        document.body.onload = function(){
+            image.onload = function () {
+                ctxa.drawImage(image, 0, 0, cana.width, cana.height);
+            };
+            image.src = './autumn.jpg';
+        }
+        filterBtn.onclick = function(){
+            var imageData = ctxa.getImageData(0, 0, cana.width, cana.height);
+            var pixelData = imageData.data;
+            for(let i = 0; i < cana.width * cana.height; i++){
+                pixelData[i * 4 + 0] = 0;
+                //pixelData[i * 4 + 1] = 0;
+                //pixelData[i * 4 + 2] = 0;
+            }
+            ctxb.putImageData(imageData, 0, 0, 0, 0, canb.width, canb.height);
+        }
+        greyBtn.onclick = function () {
+            var imageData = ctxa.getImageData(0, 0, cana.width, cana.height);
+            var pixelData = imageData.data;
+
+            for (let i = 0; i < cana.width * cana.height; i++) {
+                var r = pixelData[i * 4 + 0];
+                var g = pixelData[i * 4 + 1];
+                var b = pixelData[i * 4 + 2];
+                var grey = r * 0.3 + g * 0.59 + b * 0.11;
+
+                pixelData[i * 4 + 0] = grey;
+                pixelData[i * 4 + 1] = grey;
+                pixelData[i * 4 + 2] = grey;
+
+            }
+            ctxb.putImageData(imageData, 0, 0, 0, 0, canb.width, canb.height);
+        }
+        blackAndWhiteBtn.onclick = function () {
+            var imageData = ctxa.getImageData(0, 0, cana.width, cana.height);
+            var pixelData = imageData.data;
+
+            for (let i = 0; i < cana.width * cana.height; i++) {
+                var r = pixelData[i * 4 + 0];
+                var g = pixelData[i * 4 + 1];
+                var b = pixelData[i * 4 + 2];
+                var grey = r * 0.3 + g * 0.59 + b * 0.11;
+
+                if(grey > 255 / 2){
+                    grey = 255;
+                } else {
+                    grey = 0;
+                }
+                pixelData[i * 4 + 0] = grey;
+                pixelData[i * 4 + 1] = grey;
+                pixelData[i * 4 + 2] = grey;
+            }
+            ctxb.putImageData(imageData, 0, 0, 0, 0, canb.width, canb.height);
+        }
+        reverseBtn.onclick = function () {
+            var imageData = ctxa.getImageData(0, 0, cana.width, cana.height);
+            var pixelData = imageData.data;
+
+            for (let i = 0; i < cana.width * cana.height; i++) {
+                var r = pixelData[i * 4 + 0];
+                var g = pixelData[i * 4 + 1];
+                var b = pixelData[i * 4 + 2];
+                
+                pixelData[i * 4 + 0] = 255 - r;
+                pixelData[i * 4 + 1] = 255 - g;
+                pixelData[i * 4 + 2] = 255 - b;
+            }
+            ctxb.putImageData(imageData, 0, 0, 0, 0, canb.width, canb.height);
+        }
+        blurBtn.onclick = function () {
+            var tmpImageData = ctxa.getImageData(0, 0, cana.width, cana.height);
+            var tmpPixelData = tmpImageData.data;
+
+            var imageData = ctxa.getImageData(0, 0, cana.width, cana.height);
+            var pixelData = imageData.data;
+            //取当前像素周围八个像素点取平均值作为参考
+            //防止越界，从1开始
+            var blurR = 3;
+            var totalNum = (blurR*2 + 1)*(blurR*2 + 1)
+            for (let i = 1; i < canb.height - 1; i++) {
+                for(let j = 1; j < canb.width - 1; j++){
+
+                    var totalr = 0,
+                        totalg = 0,
+                        totalb = 0;
+
+                    for (let dx = -blurR; dx <= blurR; dx++) {
+                        for (let dy = -blurR; dy <= blurR; dy++) {
+                            var x = i + dx;
+                            var y = j + dy;
+
+                            var p = x*canb.width + y;
+                            totalr += tmpPixelData[p * 4 + 0];
+                            totalg += tmpPixelData[p * 4 + 1];
+                            totalb += tmpPixelData[p * 4 + 2];
+                        }
+                    }
+                    var p = i * canb.width + j; 
+                    pixelData[p * 4 + 0] = totalr/ totalNum;
+                    pixelData[p * 4 + 1] = totalg/ totalNum;
+                    pixelData[p * 4 + 2] = totalb/ totalNum;
+                }
+            }
+            ctxb.putImageData(imageData, 0, 0, 0, 0, canb.width, canb.height);
+        }
+        mosaicBtn.onclick = function () {
+            var tmpImageData = ctxa.getImageData(0, 0, cana.width, cana.height);
+            var tmpPixelData = tmpImageData.data;
+
+            var imageData = ctxa.getImageData(0, 0, cana.width, cana.height);
+            var pixelData = imageData.data;
+            //马赛克是，周围以个小块同一个像素值
+            //防止越界，从1开始
+            var size = 16;//长和高还需要更灵活的计算
+            var totalNum = size * size;
+            for (let i = 0; i < canb.height; i+=size) {
+                for (let j = 0; j < canb.width; j+=size) {
+
+                    var totalr = 0,
+                        totalg = 0,
+                        totalb = 0;
+
+                    for (let dx = 0; dx < size; dx++) {//循环每一个ma赛克块的像素点
+                        for (let dy = 0; dy < size; dy++) {
+                            var x = i + dx;
+                            var y = j + dy;
+
+                            var p = x * canb.width + y;
+                            totalr += tmpPixelData[p * 4 + 0];
+                            totalg += tmpPixelData[p * 4 + 1];
+                            totalb += tmpPixelData[p * 4 + 2];
+                        }
+                    }
+                    var p = i * canb.width + j;
+                    var resr = totalr / totalNum;
+                    var resg = totalg / totalNum;
+                    var resb = totalb / totalNum;
+
+                    for (let dx = 0; dx < size; dx++) {
+                        for (let dy = 0; dy < size; dy++) {
+                            var x = i + dx;
+                            var y = j + dy;
+
+                            var p = x * canb.width + y;
+                            pixelData[p * 4 + 0] = resr;
+                            pixelData[p * 4 + 1] = resg;
+                            pixelData[p * 4 + 2] = resb;
+                        }
+                    }
+                }
+            }
+            ctxb.putImageData(imageData, 0, 0, 0, 0, canb.width, canb.height);
+        }
+    </script>
+</body>
+
+</html>

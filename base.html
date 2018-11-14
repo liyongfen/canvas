@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>demo</title>
+    <style>
+        canvas{
+            display:block;
+            margin: 0 auto;
+            border: 1px solid #aaa;
+        }
+    </style>
+</head>
+<body>
+<canvas id="canvas">
+    您的浏览器尚不支持canvas
+</canvas>
+<script>
+    /**
+    * drawImage
+    * ctx.drawImage(image/canvas, dx, dy)
+    * ctx.drawImage(image/canvas, dx, dy, dw, dh)
+    * ctx.drawImage(image/canvas, sx, sy, sw,sh, dx, dy, dw, dh)
+    * d代表画在画布上的位置和宽高
+    * s代表源图片的位置和宽高
+    */
+    var can = document.getElementById('canvas');
+    var ctx = can.getContext('2d');
+    var image = new Image();
+
+    document.body.onload = init;
+    function init(){
+        can.width = 800;
+        can.height = 800;
+        //ctx.fillStyle = 'red';
+        //ctx.fillRect(10 , 10 , 300, 400);
+        image.onload = function(){
+            //ctx.drawImage(image, 0, 0);
+            //ctx.drawImage(image, 0, 0, can.width, can.height);
+            ctx.drawImage(image, 200, 0, 200, 800, 0, 0, can.width, can.height);
+        };
+        image.src = './img.jpg';
+    }
+</script>
+</body>
+</html>

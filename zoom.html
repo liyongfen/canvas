@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <title>图片缩放</title>
+    <style>
+        body{
+            background: black;
+        }
+        canvas {
+            display: block;
+            margin: 0 auto;
+            border: 1px solid #aaa;
+        }
+        input{
+            display: block;
+            margin: 20px auto;
+            width: 600px;
+        }
+    </style>
+</head>
+
+<body>
+<canvas id="canvas">
+    您的浏览器尚不支持canvas
+</canvas>
+<input type="range" min="0.5" max="3.0" step="0.01" value="3.0" id="zoom-control"/>
+<script>
+    var can = document.getElementById('canvas');
+    var ctx = can.getContext('2d');
+    var zoom = document.getElementById('zoom-control');
+    var image = new Image();
+
+    document.body.onload = init;
+    function init() {
+        can.width = 1152;
+        can.height = 768;
+        var scale = zoom.value;
+        image.onload = function () {
+            drawImageByScale(scale);
+
+            zoom.onmousemove = function(){
+                scale = zoom.value;
+                drawImageByScale(scale);
+            };
+        };
+        image.src = './img.jpg';
+    }
+    function drawImageByScale(scale){
+
+        var imageWidth = scale * can.width;
+        var imageHeight = scale * can.height;
+
+        var dx = can.width / 2 - imageWidth / 2;
+        var dy = can.height / 2 - imageHeight / 2;
+        ctx.clearRect(0, 0 , can.width, can.height);
+        ctx.drawImage(image, dx, dy, imageWidth, imageHeight);
+    }
+</script>
+</body>
+
+</html>
