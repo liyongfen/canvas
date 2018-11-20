@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>Page Title</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<body>
+    <canvas id="canvas" width="500" height="400" style="border:1px solid #ddd;"></canvas>
+    <script>
+        /**
+        * canvas绘制过程是基于状态的
+        *
+        * context.moveTo(x,y)        线条起始点
+        * context.lineTo(x,y)        线条终点
+        *
+        * context.lineWidth=10       线条宽度
+        * context.strokeStyle="#ddd" 线条颜色
+        * context.stroke()           绘制线条
+        *
+        * context.fillStyle="rgb(2,100,30)" 填充颜色
+        * context,fill()             绘制填充颜色块
+        *
+        * context.beginPath()       重新绘制一条线，不一定要成对出现
+        * context.closePath()       封闭一个区间
+        * context.arc(centerx, centery, radius, startingAngle, endingAngle, anticlockwise = false)
+        * 默认顺时针
+        */
+        var can =  document.getElementById('canvas');
+        var ctx = can.getContext('2d');
+        ctx.beginPath();
+        ctx.moveTo(50, 100);
+        ctx.lineTo(300, 300);
+        ctx.lineTo(50, 300);
+        ctx.lineTo(50, 100);
+        ctx.closePath();
+
+        ctx.lineWidth = 10;
+        ctx.strokeStyle = "red";
+        ctx.stroke();
+
+        ctx.fillStyle = "rgb(2, 100, 30)";
+        ctx.fill();
+
+        ctx.beginPath();
+        ctx.moveTo(300, 100);
+        ctx.lineTo(400, 250);
+        ctx.closePath();
+
+        ctx.strokeStyle = "yellow";
+        ctx.stroke();
+    </script>
+</body>
+</html>
