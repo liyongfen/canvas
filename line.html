@@ -9,10 +9,10 @@
     <canvas id="canvas" width="500" height="400" style="border:1px solid #ddd;"></canvas>
     <script>
         /**
-        * canvas绘制过程是基于状态的
+        * canvas绘制过程是基于状态的,不是基于元素的
         *
         * context.moveTo(x,y)        线条起始点
-        * context.lineTo(x,y)        线条终点
+        * context.lineTo(x,y)        绘制一条线
         *
         * context.lineWidth=10       线条宽度
         * context.strokeStyle="#ddd" 线条颜色
@@ -21,31 +21,37 @@
         * context.fillStyle="rgb(2,100,30)" 填充颜色
         * context,fill()             绘制填充颜色块
         *
-        * context.beginPath()       重新绘制一条线，不一定要成对出现
+        * context.beginPath()       一次全新的绘制，重新绘制一条线，不一定要成对出现
         * context.closePath()       封闭一个区间
         * context.arc(centerx, centery, radius, startingAngle, endingAngle, anticlockwise = false)
+        * 
+        * ctx.rect(x,y,w,h)  规划矩形的路径
+        * ctx.fillRect(x,y,w,h) 直接绘制矩形
+        * ctx.strokeRect(x,y,w,h)   直接绘制矩形
         * 默认顺时针
         */
         var can =  document.getElementById('canvas');
         var ctx = can.getContext('2d');
-        ctx.beginPath();
+        ctx.beginPath();//重新绘制
         ctx.moveTo(50, 100);
         ctx.lineTo(300, 300);
         ctx.lineTo(50, 300);
         ctx.lineTo(50, 100);
         ctx.closePath();
 
+        ctx.fillStyle = "rgb(2, 100, 30)";
         ctx.lineWidth = 10;
         ctx.strokeStyle = "red";
+
+        tx.fill();//填充色和边框的绘制顺序需要注意
         ctx.stroke();
 
-        ctx.fillStyle = "rgb(2, 100, 30)";
-        ctx.fill();
+       
 
-        ctx.beginPath();
+        ctx.beginPath();//重新绘制，清空掉之前的起始点
         ctx.moveTo(300, 100);
         ctx.lineTo(400, 250);
-        ctx.closePath();
+        ctx.closePath();//绘制封闭多边形的标准用法,自动将起始点和终点链接
 
         ctx.strokeStyle = "yellow";
         ctx.stroke();
