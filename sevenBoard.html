@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <title>Page Title</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+
+<body>
+    <canvas id="canvas" width="500" height="500" style="border:1px solid #ddd;"></canvas>
+    <script>
+        
+        var can = document.getElementById('canvas');
+        var ctx = can.getContext('2d');
+        var params = [
+            { 
+                point: [{ x: 0,y: 0}, {x: 500,y: 0},{x:250, y: 250}],
+                color: '#8bc34a'
+            },
+            {
+                point: [{ x: 0, y: 0 }, { x: 250, y: 250 }, { x: 0, y: 500 }],
+                color: '#2196f3'
+            },
+            {
+                point: [{ x: 0, y: 500 }, { x: 125, y: 375 }, { x: 250, y: 500 }],
+                color: '#e268d3'
+            },
+            {
+                point: [{ x: 250, y: 500 }, { x: 125, y: 375 }, { x: 250, y: 250 }, { x: 375, y: 375 }],
+                color: '#880f9c'
+            },
+            {
+                point: [{ x: 250, y: 500 }, { x: 500, y: 500 }, { x: 500, y: 250 }],
+                color: '#da8c19'
+            },
+            {
+                point: [{ x: 375, y: 375 }, { x: 250, y: 250 }, { x: 375, y: 125 }],
+                color: '#ead411'
+            },
+            {
+                point: [{ x: 500, y: 0 }, { x: 500, y: 250 },{ x: 375, y: 375 },{ x: 375, y: 125 }],
+                color: '#ea0e59'
+            }
+        ];
+        for(let i = 0; i < params.length; i++){
+            drawBlock(params[i].point, params[i].color);
+        }
+        function drawBlock(points, color){
+
+            ctx.beginPath();
+            ctx.moveTo(points[0].x, points[0].y);
+            for(let i = 1; i < points.length; i++){
+                ctx.lineTo(points[i].x, points[i].y);
+            }
+            ctx.closePath();
+            ctx.fillStyle = color;
+            ctx.fill();
+
+            ctx.strokeStyle="#333";
+            ctx.lineWidth = 3;
+            ctx.stroke()
+        }
+    </script>
+</body>
+
+</html>
