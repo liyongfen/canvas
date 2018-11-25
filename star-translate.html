@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <title>线条的属性</title>
+</head>
+
+<body>
+    <canvas id="canvas" style="border: 1px solid #ddd;display:block;margin:50px auto;"></canvas>
+    <script>
+        //角度转弧度 π/180×角度
+        //弧度变角度 180/π×弧度
+        //ctx.save() 和 ctx.restore()成对出现, 不影响外界的状态
+        //ctx.translate(x, y) 平移
+        //ctx.rolate(deg ) 旋转
+        //ctx.scale(x,y)
+
+        //ctx.transform(a,b,c,d,e,f)
+        //ctx.setTransform(a,b,c,d,e,f)
+        
+        //a水平缩放，b水平倾斜
+        //c垂直缩放，d垂直倾斜
+        //e水平位移，f垂直位移
+        window.onload = function () {
+            var can = document.getElementById('canvas');
+            var ctx = can.getContext('2d');
+            can.width = 800;
+            can.height = 800;
+
+            ctx.fillStyle = 'block';
+            ctx.fillRect(0, 0, can.width, can.height);
+            ctx.stroke();
+
+            for (let i = 0; i < 200; i++) {
+                var x = Math.random() * can.width;
+                var y = Math.random() * can.height;
+                var R = Math.random() * 10 + 10;
+                var a = Math.random() * 360;
+                drawStar(ctx, x, y, R,  a);
+            }
+        
+            //drawStar(ctx, 400, 400, 300, 30, 0);
+            
+        }
+        function drawStar(ctx, x, y, R, rot) {
+            ctx.save();
+
+            ctx.translate(x, y);
+            ctx.rotate(rot / 180 * Math.PI );
+            ctx.scale(R, R);//会带来负面影响
+            starPath(ctx);
+
+            ctx.fillStyle = '#fb3';
+            //ctx.strokeStyle = '#fd5';
+            //ctx.lineWidth = 3;
+            //ctx.lineJoin = 'round';
+            ctx.fill();
+            //ctx.stroke();
+
+            ctx.restore();
+        }
+        function starPath(ctx){
+            ctx.beginPath();
+            for (let i = 0; i < 5; i++) {
+
+                ctx.lineTo(
+                    Math.cos((i * 72 + 18 ) / 180 * Math.PI),
+                    -Math.sin((i * 72 + 18 ) / 180 * Math.PI)
+                );
+                ctx.lineTo(
+                    Math.cos((i * 72 + 54) / 180 * Math.PI) * 0.5,
+                    -Math.sin((i * 72 + 54) / 180 * Math.PI) * 0.5
+                );
+            }
+            ctx.closePath();
+        }
+    </script>
+</body>
+
+</html>

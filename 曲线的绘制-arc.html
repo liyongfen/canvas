@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <title>曲线的绘制</title>
+</head>
+
+<body>
+    <canvas id="canvas" style="border:1px solid red;  display:block;margin:50px auto;"></canvas>
+    <script>
+        //角度转弧度 π/180×角度
+        //弧度变角度 180/π×弧度
+        window.onload = function () {
+            var can = document.getElementById('canvas');
+            var ctx = can.getContext('2d');
+            can.width = 800;
+            can.height = 800;
+             
+            var r = 50;
+            
+            drawStrokeRoundRect(ctx, 0, 0, 300, 300, r);
+            drawFillRoundRect(ctx, 400, 400, 300, 300, r)
+        }
+        function drawStrokeRoundRect(ctx, x, y, width, height, radius, color = 'block'){
+            //当半径大于两倍宽高，不进行绘制
+            if(width < 2*radius || height < 2*radius){
+                return false;
+            }
+            ctx.save();
+            
+            ctx.translate(x, y);
+            pathRoundRect(ctx, width, height, radius);
+            ctx.strokeStyle = color;
+            ctx.stroke();
+
+            ctx.restore();
+        }
+        function drawFillRoundRect(ctx, x, y, width, height, radius, color = 'block'){
+            //当半径大于两倍宽高，不进行绘制
+            if(width < 2*radius || height < 2*radius){
+                return false;
+            }
+            ctx.save();
+            
+            ctx.translate(x, y);
+            pathRoundRect(ctx, width, height, radius);
+            ctx.fillStyle = color;
+            ctx.fill();
+
+            ctx.restore();
+        }
+       function pathRoundRect( ctx, width, height, radius){
+            ctx.beginPath();
+            //右下角圆弧
+            ctx.arc(width - radius, height - radius, radius, 0, Math.PI/2);
+            ctx.lineTo(radius, height);
+            //左下角
+            ctx.arc(radius, height - radius, radius, Math.PI/2, Math.PI);
+            ctx.lineTo(0, radius);
+            //左上角
+            ctx.arc(radius, radius, radius, Math.PI, Math.PI*3/2);
+            ctx.lineTo(radius, 0);
+            //右上角
+            ctx.arc(width - radius, radius, radius, Math.PI*3/2, 2*Math.PI);
+            //ctx.lineTo(width, height - radius);
+
+            ctx.closePath();
+        }
+    </script>
+</body>
+
+</html>

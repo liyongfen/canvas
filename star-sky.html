@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <title>星空</title>
+</head>
+
+<body>
+    <canvas id="canvas" style="border: 1px solid #ddd;display:block;margin:50px auto;"></canvas>
+    <script>
+        //角度转弧度 π/180×角度
+        //弧度变角度 180/π×弧度
+        //can的y轴向下为正
+        //linejoin 线条与线条相交的时候呈现的形态，miter尖角(default) ,bevel平角, round
+        window.onload = function () {
+            var can = document.getElementById('canvas');
+            var ctx = can.getContext('2d');
+            can.width = 800;
+            can.height = 800;
+
+            ctx.fillStyle = 'block';
+            ctx.fillRect(0, 0, can.width, can.height);
+            ctx.stroke();
+
+            for(let i = 0; i < 200; i++){
+                var x = Math.random() * can.width;
+                var y = Math.random() * can.height;
+                var R = Math.random() * 10 + 10;
+                var a = Math.random() * 360;
+                drawStar(ctx, x, y, R, R / 2.0, a);
+            }
+
+            function drawStar(ctx, x, y, R, r, rotate) {
+                ctx.beginPath();
+                for (let i = 0; i < 5; i++) {
+                    ctx.lineTo(
+                        Math.cos((i * 72 + 18 - rotate) / 180 * Math.PI) * R + x,
+                        -Math.sin((i * 72 + 18 - rotate) / 180 * Math.PI) * R + y
+                    );
+                    ctx.lineTo(
+                        Math.cos((i * 72 + 54 - rotate) / 180 * Math.PI) * r + x,
+                        -Math.sin((i * 72 + 54 - rotate) / 180 * Math.PI) * r + y
+                    );
+                }
+                ctx.closePath();
+                ctx.strokeStyle = '#fd5';
+                ctx.fillStyle = '#fb3';
+                ctx.lineJoin = 'round';
+                ctx.lineWidth = 3;
+
+                ctx.fill();
+                ctx.stroke();
+            }
+        }
+    </script>
+</body>
+
+</html>

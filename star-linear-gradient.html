@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <title>线条的属性</title>
+</head>
+
+<body>
+    <canvas id="canvas" style="border: 1px solid #ddd;display:block;margin:50px auto;"></canvas>
+    <script>
+        //角度转弧度 π/180×角度
+        //弧度变角度 180/π×弧度
+        //渐变线
+        //var grd = ctx.createLinearGradient(xstart, ystart, xend, yend)
+        //grd.addColorStop(stop, color)
+        window.onload = function () {
+            var can = document.getElementById('canvas');
+            var ctx = can.getContext('2d');
+            can.width = 1200;
+            can.height = 800;
+
+            var grd = ctx.createLinearGradient(0 , 0, 1200, 800);
+            grd.addColorStop(0, 'black');
+            grd.addColorStop(1.0, '#035');
+            ctx.fillStyle = grd;
+            ctx.fillRect(0, 0, 1200, 800);
+
+
+            for (let i = 0; i < 200; i++) {
+                var x = Math.random() * can.width;
+                var y = Math.random() * can.height * 0.65;
+                var R = Math.random() * 10 + 10;
+                var a = Math.random() * 360;
+                drawStar(ctx, x, y, R, a);
+            }
+        }
+                
+        function drawStar(ctx, x, y, R, rot) {
+            ctx.save();
+
+            ctx.translate(x, y);
+            ctx.rotate(rot / 180 * Math.PI);
+            ctx.scale(R, R);//会带来负面影响
+            starPath(ctx);
+
+            ctx.fillStyle = '#fb3';
+            //ctx.strokeStyle = '#fd5';
+            //ctx.lineWidth = 3;
+            //ctx.lineJoin = 'round';
+            ctx.fill();
+            //ctx.stroke();
+
+            ctx.restore();
+        }
+        function starPath(ctx) {
+            ctx.beginPath();
+            for (let i = 0; i < 5; i++) {
+
+                ctx.lineTo(
+                    Math.cos((i * 72 + 18) / 180 * Math.PI),
+                    -Math.sin((i * 72 + 18) / 180 * Math.PI)
+                );
+                ctx.lineTo(
+                    Math.cos((i * 72 + 54) / 180 * Math.PI) * 0.5,
+                    -Math.sin((i * 72 + 54) / 180 * Math.PI) * 0.5
+                );
+            }
+            ctx.closePath();
+        }
+    </script>
+</body>
+
+</html>

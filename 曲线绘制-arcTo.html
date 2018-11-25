@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <title>曲线的绘制</title>
+</head>
+
+<body>
+    <canvas id="canvas" style="border:1px solid red;  display:block;margin:50px auto;"></canvas>
+    <script>
+        //角度转弧度 π/180×角度
+        //弧度变角度 180/π×弧度
+        window.onload = function () {
+            var can = document.getElementById('canvas');
+            var ctx = can.getContext('2d');
+            can.width = 800;
+            can.height = 800;
+
+            ctx.strokeStyle = 'red';
+            ctx.beginPath();
+            ctx.moveTo(0, 200);
+            ctx.arcTo(100, 200, 400, 500, 50);
+            //ctx.closePath();
+            ctx.stroke();
+        }
+       
+        
+    </script>
+</body>
+
+</html>
