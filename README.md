@@ -1,7 +1,6 @@
 
 
 ## 文本绘制
-
 文本样式
 font 
 默认值："20px sans-serif"
@@ -32,7 +31,6 @@ ctx.measureText(string).width  //高度还没有
 ```
 
 ## 其他
-
 阴影
 ```
 ctx.shadowColor = "gray"
