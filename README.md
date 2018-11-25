@@ -1,5 +1,27 @@
+## 曲线绘制
+绘制圆
+```
+ctx.arc(x, y, r, beginAngle, endAngle, counterclockwise)// 默认顺时针 counterclockwise(逆时针) = false 
 
+```
 
+(x1, y1)是一个控制点，绘制相切于两条直线并半径为r的曲线，切点不一定是起始点或者终点
+```
+ctx.moveTo(x0, y0);
+ctx.arcTo(x1, y1, x2, y2, r);
+```
+
+二次贝塞尔曲线，(x0, y0)起始点，(x1, y1)是控制点， (x2, y2)结束点
+```
+ctx.moveTo(x0, y0);
+ctx.quadraticCurveTo(x1, y1, x2, y2);
+```
+
+三次贝塞尔曲线，(x1,y1)与(x2,y2)都是控制点，(x0,y0)和(x1,y1)构成线段，(x2,y2)和(x3,y3)构成线段，曲线相切于两个线段
+```
+ctx.moveTo(x0, y0);
+ctx.bezierCurveTo(x1, y1, x2, y2, x3, y3)
+```
 ## 文本绘制
 文本样式
 font 
