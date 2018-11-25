@@ -31,7 +31,7 @@ ctx.fillText('测试test', x, y, [maxlen]);
 ctx.measureText(string).width  //高度还没有
 ```
 
-##其他
+## 其他
 
 阴影
 ```
@@ -62,11 +62,11 @@ ctx.clearRect(x, y, w, h)
 判断是否在区域内
 ctx.isPointPath(x, y);
 
-##兼容解决
+## 兼容解决
 explorecanvas 兼容IE6,7,8等浏览器的兼容性问题
 https://code.google.com/p/explorecanvas/
 
-##canvas图形库
+## canvas图形库
 canvasplus https://code.google.com/p/canvasplus/
 artisan js http://artisanjs.com/
 rgraph https://roopons.com.au/wp-content/plugins/viral-options/js/rgraph/
