@@ -6,7 +6,8 @@
 font 
 默认值："20px sans-serif"
 例：
-```ctx.font = "bold 100px Arial";
+```
+ctx.font = "bold 100px Arial";
 font-style 
 font-variant 
 font-weight 
