@@ -60,7 +60,9 @@ ctx.clearRect(x, y, w, h)
 ```
 
 判断是否在区域内
+```
 ctx.isPointPath(x, y);
+```
 
 ## 兼容解决
 explorecanvas 兼容IE6,7,8等浏览器的兼容性问题
